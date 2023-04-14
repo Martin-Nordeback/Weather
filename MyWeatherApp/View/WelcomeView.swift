@@ -13,14 +13,13 @@ struct WelcomeView: View {
     var body: some View {
         VStack {
             VStack(spacing: 20) {
-                Text("Welcome to the weather app")
+                Text("What's the weather like?")
                     .bold().font(.title)
 
                 Text("Please share your current location to get the weather in your area")
                     .padding()
             }
             .multilineTextAlignment(.center)
-            .foregroundColor(Color(hue: 0.667, saturation: 0.067, brightness: 1.0))
             .padding()
 
             LocationButton(.shareCurrentLocation) {
