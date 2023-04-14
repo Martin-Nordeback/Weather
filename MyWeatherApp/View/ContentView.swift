@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    
     @StateObject var locationManager = LocationManager()
     @State private var weather: ResponseBody?
     var weatherManager = WeatherManager()
+    @State private var isDayTime = false
 
     var body: some View {
         VStack {
@@ -38,8 +38,16 @@ struct ContentView: View {
                 }
             }
         }
-        .background(Color(hue: 0.665, saturation: 0.917, brightness: 0.262))
-        .preferredColorScheme(.dark)
+        .background(isDayTime ? Color(hue: 0.588, saturation: 0.739, brightness: 0.962) : Color(hue: 0.665, saturation: 0.917, brightness: 0.262))
+        .preferredColorScheme(isDayTime ? .light : .dark)
+        .onReceive(locationManager.$location) { location in
+            if let location = location {
+                let now = Date()
+                // let sunrise = location.sunrise
+                // let sunset = location.sunset
+                // isDayTime = now > sunrise && now < sunset
+            }
+        }
     }
 }
 

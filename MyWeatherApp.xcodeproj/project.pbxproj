@@ -20,6 +20,8 @@
 		0FAD12F829E96A4B00B0DB45 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FAD12F729E96A4B00B0DB45 /* Extensions.swift */; };
 		0FAD12FA29E96B0500B0DB45 /* WeatherRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FAD12F929E96B0500B0DB45 /* WeatherRow.swift */; };
 		0FAD12FC29E96B9A00B0DB45 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FAD12FB29E96B9A00B0DB45 /* ModelData.swift */; };
+		0FAD130029E96EA000B0DB45 /* weatherData.json in Resources */ = {isa = PBXBuildFile; fileRef = 0FAD12FF29E96EA000B0DB45 /* weatherData.json */; };
+		0FAD130229E981C800B0DB45 /* WeekWeatherRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FAD130129E981C800B0DB45 /* WeekWeatherRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +39,8 @@
 		0FAD12F729E96A4B00B0DB45 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		0FAD12F929E96B0500B0DB45 /* WeatherRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRow.swift; sourceTree = "<group>"; };
 		0FAD12FB29E96B9A00B0DB45 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
+		0FAD12FF29E96EA000B0DB45 /* weatherData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = weatherData.json; sourceTree = "<group>"; };
+		0FAD130129E981C800B0DB45 /* WeekWeatherRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekWeatherRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +88,7 @@
 			children = (
 				0F7BA4D329E8026E0078C729 /* Preview Assets.xcassets */,
 				0FAD12FB29E96B9A00B0DB45 /* ModelData.swift */,
+				0FAD12FF29E96EA000B0DB45 /* weatherData.json */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -114,6 +119,7 @@
 				0FAD12F129E9682900B0DB45 /* WeatherIcon.swift */,
 				0FAD12F729E96A4B00B0DB45 /* Extensions.swift */,
 				0FAD12F929E96B0500B0DB45 /* WeatherRow.swift */,
+				0FAD130129E981C800B0DB45 /* WeekWeatherRow.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -177,6 +183,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0F7BA4D429E8026E0078C729 /* Preview Assets.xcassets in Resources */,
+				0FAD130029E96EA000B0DB45 /* weatherData.json in Resources */,
 				0F7BA4D129E8026E0078C729 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -199,6 +206,7 @@
 				0FAD12EF29E9670C00B0DB45 /* LoadingView.swift in Sources */,
 				0FAD12ED29E9474000B0DB45 /* WelcomeView.swift in Sources */,
 				0FAD12F629E9694600B0DB45 /* WeatherView.swift in Sources */,
+				0FAD130229E981C800B0DB45 /* WeekWeatherRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

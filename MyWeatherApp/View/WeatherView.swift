@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WeatherView: View {
     var weather: ResponseBody
+    @State private var isDayTime = false
 
     var body: some View {
         ZStack(alignment: .leading) {
@@ -21,8 +22,8 @@ struct WeatherView: View {
                         .fontWeight(.light)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-
-                Spacer()
+                // .padding(.top, 80)
+                .padding()
 
                 VStack {
                     HStack {
@@ -33,60 +34,79 @@ struct WeatherView: View {
                         }
                         .frame(width: 150, alignment: .leading)
 
-                        Spacer()
-
                         Text(weather.main.feelsLike.roundDouble() + "°")
                             .font(.system(size: 100))
                             .fontWeight(.bold)
                             .padding()
                     }
-                    Spacer()
-                        .frame(height: 80)
-                    AsyncImage(url: URL(string: "https://cdn.pixabay.com/photo/2020/01/24/21/33/city-4791269_960_720.png")) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 350)
-                    } placeholder: {
-                        ProgressView()
-                    }
 
                     Spacer()
-                }
-                .frame(maxWidth: .infinity, alignment: .trailing)
-            }
-            .padding()
-            .frame(maxWidth: .infinity, alignment: .leading)
-            VStack {
-                Spacer()
-                VStack(alignment: .leading, spacing: 20) {
-                    Text("Weather now")
-                        .bold()
-                        .padding(.bottom)
 
-                    HStack {
-                        WeatherRow(logo: "thermometer", name: "Min temp", value: weather.main.tempMin.roundDouble() + "°")
-                        Spacer()
-                        WeatherRow(logo: "thermometer", name: "Max temp", value: weather.main.tempMax.roundDouble() + "°")
+                    ZStack {
+                        if isDayTime {
+                            Image(systemName: "sun.max.fill")
+                                .resizable()
+                                .foregroundColor(.yellow)
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 250)
+                                .shadow(color: .yellow, radius: 50, x: 0.0, y: 0.0)
+                        } else {
+                            Image(systemName: "moon.fill")
+                                .resizable()
+                                .foregroundColor(.gray)
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 250)
+                                .shadow(color: .yellow, radius: 40, x: 0.0, y: 0.0)
+                        }
                     }
 
-                    HStack {
-                        WeatherRow(logo: "wind", name: "Wind speed", value: weather.wind.speed.roundDouble() + " m/s")
-                        Spacer()
-                        WeatherRow(logo: "humidity", name: "Humidity", value: "\(weather.main.humidity.roundDouble())%")
+                    .onAppear {
+                        let hour = Calendar.current.component(.hour, from: Date())
+                        self.isDayTime = hour >= 6 && hour < 18
+                    }
+
+                    // Spacer()
+                    VStack {
+                        //  Spacer()
+                        VStack(alignment: .leading, spacing: 20) {
+                            Text("Weather now")
+                                .bold()
+                                .padding(.bottom)
+
+                            HStack {
+                                WeatherRow(logo: "thermometer", name: "Min temp", value: weather.main.tempMin.roundDouble() + "°")
+                                Spacer()
+                                WeatherRow(logo: "thermometer", name: "Max temp", value: weather.main.tempMax.roundDouble() + "°")
+                            }
+
+                            HStack {
+                                WeatherRow(logo: "wind", name: "Wind speed", value: weather.wind.speed.roundDouble() + " m/s")
+                                Spacer()
+                                WeatherRow(logo: "humidity", name: "Humidity", value: "\(weather.main.humidity.roundDouble())%")
+                            }
+                            Text("Upcoming days")
+                                .bold()
+                            // change to a vstack with full week
+                            HStack {
+                                WeekWeatherRow(logo: "sun.min", name: "Day", value: weather.main.feelsLike.roundDouble() + "°")
+                                /* WeatherRow(logo: "wind", name: "Day", value: "\(weather.main.humidity.roundDouble())%") */
+                            }
+                            // .padding(.bottom, 40)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+                        // .padding(.bottom, 20)
+                        .foregroundColor(Color(hue: 0.656, saturation: 0.787, brightness: 0.354))
+                        .background(.white)
+                        .cornerRadius(20, corners: [.topLeft, .topRight])
                     }
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
-                .padding(.bottom, 20)
-                .foregroundColor(Color(hue: 0.656, saturation: 0.787, brightness: 0.354))
-                .background(.white)
-                .cornerRadius(20, corners: [.topLeft, .topRight])
             }
         }
+        .foregroundColor(.white)
         .edgesIgnoringSafeArea(.bottom)
-        .background(Color(hue: 0.656, saturation: 0.787, brightness: 0.354))
-        .preferredColorScheme(.dark)
+        .background(isDayTime ? Color(hue: 0.588, saturation: 0.739, brightness: 0.962) : Color(hue: 0.665, saturation: 0.917, brightness: 0.262))
+        .preferredColorScheme(isDayTime ? .light : .dark)
     }
 }
 

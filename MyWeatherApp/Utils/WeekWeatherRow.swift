@@ -1,5 +1,5 @@
 //
-//  WeatherRow.swift
+//  WeekWeatherRow.swift
 //  MyWeatherApp
 //
 //  Created by Martin Nordebäck on 2023-04-14.
@@ -7,34 +7,33 @@
 
 import SwiftUI
 
-struct WeatherRow: View {
+struct WeekWeatherRow: View {
     var logo: String
     var name: String
     var value: String
+    var day: String = ""
 
     var body: some View {
-        HStack(spacing: 20) {
+        VStack(spacing: 5) {
             Image(systemName: logo)
                 .font(.title2)
                 .frame(width: 20, height: 20)
                 .padding()
                 .background(Color(hue: 1.0, saturation: 0.0, brightness: 0.888))
                 .cornerRadius(50)
-
-            VStack(alignment: .leading, spacing: 8) {
-                Text(name)
-                    .font(.caption)
-
-                Text(value)
-                    .bold()
-                    .font(.title)
-            }
+            Text(name)
+                .font(.caption)
+            Text(value)
+                .bold()
+                
+            Text(day)
+                .font(.caption)
         }
     }
 }
 
-struct WeatherRow_Previews: PreviewProvider {
+struct WeekWeatherRow_Previews: PreviewProvider {
     static var previews: some View {
-        WeatherRow(logo: "thermometer", name: "Feels like", value: "8°")
+        WeekWeatherRow(logo: "thermometer", name: "Feels like", value: "8°", day: "day")
     }
 }
