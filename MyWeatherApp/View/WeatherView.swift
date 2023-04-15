@@ -41,7 +41,7 @@ struct WeatherView: View {
                     }
 
                     Spacer()
-
+                    
                     ZStack {
                         if isDayTime {
                             Image(systemName: "sun.max.fill")

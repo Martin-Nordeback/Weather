@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject var locationManager = LocationManager()
     @State private var weather: ResponseBody?
+    @State private var forecast: [ForecastItem]?
     var weatherManager = WeatherManager()
     @State private var isDayTime = false
 
@@ -24,6 +25,7 @@ struct ContentView: View {
                             do {
                                 weather = try await weatherManager
                                     .getCurrentWeather(latitude: location.latitude, longitude: location.longitude)
+
                             } catch {
                                 print("Error getting weather \(error)")
                             }
@@ -40,14 +42,14 @@ struct ContentView: View {
         }
         .background(isDayTime ? Color(hue: 0.588, saturation: 0.739, brightness: 0.962) : Color(hue: 0.665, saturation: 0.917, brightness: 0.262))
         .preferredColorScheme(isDayTime ? .light : .dark)
-        .onReceive(locationManager.$location) { location in
-            if let location = location {
-                let now = Date()
-                // let sunrise = location.sunrise
-                // let sunset = location.sunset
-                // isDayTime = now > sunrise && now < sunset
-            }
-        }
+//        .onReceive(locationManager.$location) { location in
+//            if let location = location {
+//                let now = Date()
+//                 let sunrise = location.sunrise
+//                 let sunset = location.sunset
+//                 isDayTime = now > sunrise && now < sunset
+//            }
+//        }
     }
 }
 

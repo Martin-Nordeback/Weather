@@ -22,7 +22,7 @@
 		0FAD12FC29E96B9A00B0DB45 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FAD12FB29E96B9A00B0DB45 /* ModelData.swift */; };
 		0FAD130029E96EA000B0DB45 /* weatherData.json in Resources */ = {isa = PBXBuildFile; fileRef = 0FAD12FF29E96EA000B0DB45 /* weatherData.json */; };
 		0FAD130229E981C800B0DB45 /* WeekWeatherRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FAD130129E981C800B0DB45 /* WeekWeatherRow.swift */; };
-		0FAD130429EA7AEF00B0DB45 /* weatherDataFullweek in Resources */ = {isa = PBXBuildFile; fileRef = 0FAD130329EA7AEF00B0DB45 /* weatherDataFullweek */; };
+		0FAD130429EA7AEF00B0DB45 /* weatherDataFullweek.json in Resources */ = {isa = PBXBuildFile; fileRef = 0FAD130329EA7AEF00B0DB45 /* weatherDataFullweek.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,7 +42,7 @@
 		0FAD12FB29E96B9A00B0DB45 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
 		0FAD12FF29E96EA000B0DB45 /* weatherData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = weatherData.json; sourceTree = "<group>"; };
 		0FAD130129E981C800B0DB45 /* WeekWeatherRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekWeatherRow.swift; sourceTree = "<group>"; };
-		0FAD130329EA7AEF00B0DB45 /* weatherDataFullweek */ = {isa = PBXFileReference; lastKnownFileType = text; path = weatherDataFullweek; sourceTree = "<group>"; };
+		0FAD130329EA7AEF00B0DB45 /* weatherDataFullweek.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = weatherDataFullweek.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,7 +91,7 @@
 				0F7BA4D329E8026E0078C729 /* Preview Assets.xcassets */,
 				0FAD12FB29E96B9A00B0DB45 /* ModelData.swift */,
 				0FAD12FF29E96EA000B0DB45 /* weatherData.json */,
-				0FAD130329EA7AEF00B0DB45 /* weatherDataFullweek */,
+				0FAD130329EA7AEF00B0DB45 /* weatherDataFullweek.json */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -185,7 +185,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0FAD130429EA7AEF00B0DB45 /* weatherDataFullweek in Resources */,
+				0FAD130429EA7AEF00B0DB45 /* weatherDataFullweek.json in Resources */,
 				0F7BA4D429E8026E0078C729 /* Preview Assets.xcassets in Resources */,
 				0FAD130029E96EA000B0DB45 /* weatherData.json in Resources */,
 				0F7BA4D129E8026E0078C729 /* Assets.xcassets in Resources */,
