@@ -14,7 +14,7 @@ struct WeatherView: View {
     var body: some View {
         ZStack(alignment: .leading) {
             VStack {
-                VStack(alignment: .leading, spacing: 5) {
+                VStack(alignment: .leading, spacing: 2) {
                     Text(weather.name)
                         .bold().font(.title)
 
@@ -22,20 +22,20 @@ struct WeatherView: View {
                         .fontWeight(.light)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                // .padding(.top, 80)
-                .padding()
+                .padding(.top, 40)
+                .padding(.leading)
 
                 VStack {
                     HStack {
                         VStack(spacing: 20) {
                             Image(systemName: WeatherIcon(condition: weather.weather[0].main).systemName)
-                                .font(.system(size: 40))
+                                .font(.system(size: 60))
                             Text(weather.weather[0].main)
                         }
                         .frame(width: 150, alignment: .leading)
 
                         Text(weather.main.feelsLike.roundDouble() + "°")
-                            .font(.system(size: 100))
+                            .font(.system(size: 90))
                             .fontWeight(.bold)
                             .padding()
                     }
@@ -48,26 +48,23 @@ struct WeatherView: View {
                                 .resizable()
                                 .foregroundColor(.yellow)
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 250)
+                                .frame(width: 200, height: 200)
                                 .shadow(color: .yellow, radius: 50, x: 0.0, y: 0.0)
                         } else {
                             Image(systemName: "moon.fill")
                                 .resizable()
                                 .foregroundColor(.gray)
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: 250)
+                                .frame(width: 200, height: 200)
                                 .shadow(color: .yellow, radius: 40, x: 0.0, y: 0.0)
                         }
                     }
-
                     .onAppear {
                         let hour = Calendar.current.component(.hour, from: Date())
                         self.isDayTime = hour >= 6 && hour < 18
                     }
 
-                    // Spacer()
                     VStack {
-                        //  Spacer()
                         VStack(alignment: .leading, spacing: 20) {
                             Text("Weather now")
                                 .bold()
@@ -86,16 +83,15 @@ struct WeatherView: View {
                             }
                             Text("Upcoming days")
                                 .bold()
-                            // change to a vstack with full week
-                            HStack {
-                                WeekWeatherRow(logo: "sun.min", name: "Day", value: weather.main.feelsLike.roundDouble() + "°")
-                                /* WeatherRow(logo: "wind", name: "Day", value: "\(weather.main.humidity.roundDouble())%") */
+
+                            HStack(spacing: 2) {
+                                ForEach(0 ..< 7) { day in
+                                    WeekWeatherRow(logo: "sun.min", name: "Day \(day + 1)", value: "\(weather.main.feelsLike.roundDouble())°")
+                                }
                             }
-                            // .padding(.bottom, 40)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
-                        // .padding(.bottom, 20)
                         .foregroundColor(Color(hue: 0.656, saturation: 0.787, brightness: 0.354))
                         .background(.white)
                         .cornerRadius(20, corners: [.topLeft, .topRight])

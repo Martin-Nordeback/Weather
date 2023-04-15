@@ -17,7 +17,7 @@ struct WeekWeatherRow: View {
         VStack(spacing: 5) {
             Image(systemName: logo)
                 .font(.title2)
-                .frame(width: 20, height: 20)
+                .frame(width: 18, height: 18)
                 .padding()
                 .background(Color(hue: 1.0, saturation: 0.0, brightness: 0.888))
                 .cornerRadius(50)
