@@ -1,20 +1,13 @@
-//
-//  Extensions.swift
-//  MyWeatherApp
-//
-//  Created by Martin Nordebäck on 2023-04-14.
-//
 
 import Foundation
 import SwiftUI
 
-// Extension for rounded Double to 0 decimals
+// Extension for rounded Double to 0 decimals example 9° instead of 9.987°
 extension Double {
     func roundDouble() -> String {
         return String(format: "%.0f", self)
     }
 }
-
 
 // Extension for adding rounded corners to specific corners
 extension View {

@@ -1,11 +1,6 @@
-//
-//  LoadingView.swift
-//  MyWeatherApp
-//
-//  Created by Martin Nordebäck on 2023-04-14.
-//
-
 import SwiftUI
+
+// Spinning circle view that runs while app is getting your location data
 
 struct LoadingView: View {
     var body: some View {

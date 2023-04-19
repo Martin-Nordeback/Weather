@@ -1,9 +1,5 @@
-//
-//  WeatherRow.swift
-//  MyWeatherApp
-//
-//  Created by Martin Nordebäck on 2023-04-14.
-//
+
+// UI for the daily view
 
 import SwiftUI
 
@@ -24,10 +20,8 @@ struct WeatherRow: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text(name)
                     .font(.caption)
-
                 Text(value)
                     .bold()
-                    .font(.title)
             }
         }
     }

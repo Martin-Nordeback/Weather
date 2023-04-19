@@ -1,9 +1,5 @@
-//
-//  WeatherIconEnum.swift
-//  MyWeatherApp
-//
-//  Created by Martin Nordebäck on 2023-04-14.
-//
+
+//reading weather and finds equal predefined apple icons
 
 import Foundation
 

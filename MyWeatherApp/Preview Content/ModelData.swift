@@ -1,13 +1,13 @@
-//
-//  ModelData.swift
-//  MyWeatherApp
-//
-//  Created by Martin Nordebäck on 2023-04-14.
-//
+/*
+ Preview Content folder
+ Is only to be able to fetch sample data when building the UI, this will not come along in the live version
+ Same goes for the .json files
+ */
 
 import Foundation
 
 var previewWeather: ResponseBody = load("weatherData.json")
+var forecastWeather: [ForecastResponse] = load("weatherDataFullweek.json")
 
 func load<T: Decodable>(_ filename: String) -> T {
     let data: Data

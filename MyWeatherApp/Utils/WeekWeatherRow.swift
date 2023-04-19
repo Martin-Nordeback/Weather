@@ -1,21 +1,16 @@
-//
-//  WeekWeatherRow.swift
-//  MyWeatherApp
-//
-//  Created by Martin Nordebäck on 2023-04-14.
-//
 
 import SwiftUI
 
+// UI for the weakly view
+
 struct WeekWeatherRow: View {
-    var logo: String
     var name: String
     var value: String
-    var day: String = ""
+    var condition: String
 
     var body: some View {
         VStack(spacing: 5) {
-            Image(systemName: logo)
+            Image(systemName: WeatherIcon(condition: condition).systemName)
                 .font(.title2)
                 .frame(width: 18, height: 18)
                 .padding()
@@ -25,15 +20,12 @@ struct WeekWeatherRow: View {
                 .font(.caption)
             Text(value)
                 .bold()
-                
-            Text(day)
-                .font(.caption)
         }
     }
 }
 
 struct WeekWeatherRow_Previews: PreviewProvider {
     static var previews: some View {
-        WeekWeatherRow(logo: "thermometer", name: "Feels like", value: "8°", day: "day")
+        WeekWeatherRow(name: "Week day", value: "8°", condition: "system")
     }
 }

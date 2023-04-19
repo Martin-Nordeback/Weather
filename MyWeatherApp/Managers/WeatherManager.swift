@@ -1,18 +1,19 @@
-//
-//  WeatherManagerAPI.swift
-//  MyWeatherApp
-//
-//  Created by Martin Nordebäck on 2023-04-14.
-//
+/*
+ 
+ 
+ 
+ */
 
 import CoreLocation
 import Foundation
 
 class WeatherManager {
     // MARK: API FOR CURRENT WEATHER
+    
+    private let apiKey = "17fa258a1f4f333c53a6161a066e886c"
 
     func getCurrentWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) async throws -> ResponseBody {
-        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=17fa258a1f4f333c53a6161a066e886c&units=metric") else { fatalError("Missing URL") }
+        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)&units=metric") else { fatalError("Missing URL") }
 
         let urlRequest = URLRequest(url: url)
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
@@ -26,16 +27,19 @@ class WeatherManager {
 
     func getWeatherForecast(latitude: CLLocationDegrees, longitude: CLLocationDegrees) async throws -> [ForecastItem] {
         guard let url = URL(string:
-            "https://api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=1a3d402ebb97dbcb6fb058da433289cc&units=metric") else { fatalError("Missing Forecast URL") }
+            "https://api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)&units=metric") else { fatalError("Missing Forecast URL") }
 
         let urlRequest = URLRequest(url: url)
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
         guard (response as? HTTPURLResponse)?.statusCode == 200 else { fatalError("Error fetching forecast weather data") }
 
-        let decodedData = try JSONDecoder().decode(ForecastResponse.self, from: data)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(.forecastDateFormatter)
+        let decodedData = try decoder.decode(ForecastResponse.self, from: data)
         return decodedData.list
     }
 }
+
 
 // DRY!! + take it away from this scope
 struct ResponseBody: Decodable {
@@ -78,12 +82,20 @@ extension ResponseBody.MainResponse {
     var tempMax: Double { return temp_max }
 }
 
-struct ForecastResponse: Decodable {
+/* --------------------------------------- */
+
+struct ForecastResponse: Decodable, Identifiable, Hashable {
+    var id = UUID()
     let list: [ForecastItem]
+
+    enum CodingKeys: String, CodingKey {
+        case list
+    }
 }
 
-struct ForecastItem: Decodable {
-    let date: Date
+struct ForecastItem: Decodable, Hashable, Identifiable {
+    var id = UUID()
+    var date: String
     let main: MainResponse
     let weather: [WeatherResponse]
     let wind: WindResponse
@@ -95,7 +107,7 @@ struct ForecastItem: Decodable {
         case wind
     }
 
-    struct MainResponse: Decodable {
+    struct MainResponse: Decodable, Hashable {
         let temperature: Double
         let pressure: Double
         let humidity: Double
@@ -107,14 +119,14 @@ struct ForecastItem: Decodable {
         }
     }
 
-    struct WeatherResponse: Decodable {
+    struct WeatherResponse: Decodable, Hashable {
         let id: Int
         let main: String
         let description: String
         let icon: String
     }
 
-    struct WindResponse: Decodable {
+    struct WindResponse: Decodable, Hashable {
         let speed: Double
         let degrees: Double
 
@@ -123,4 +135,28 @@ struct ForecastItem: Decodable {
             case degrees = "deg"
         }
     }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        date = try container.decode(String.self, forKey: .date)
+        main = try container.decode(MainResponse.self, forKey: .main)
+        weather = try container.decode([WeatherResponse].self, forKey: .weather)
+        wind = try container.decode(WindResponse.self, forKey: .wind)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    static func ==(lhs: ForecastItem, rhs: ForecastItem) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
+extension DateFormatter {
+    static let forecastDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "E"
+        return formatter
+    }()
 }

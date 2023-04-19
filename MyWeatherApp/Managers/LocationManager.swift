@@ -1,8 +1,8 @@
-//
-//  LocationManager.swift
-//  MyWeatherApp
-//
-//  Created by Martin Nordebäck on 2023-04-14.
+/*
+ 
+ 
+ 
+ */
 
 // MARK: This class is responsible for managing location-related tasks
 

@@ -1,15 +1,22 @@
-//
-//  WeatherView.swift
-//  MyWeatherApp
-//
-//  Created by Martin Nordebäck on 2023-04-14.
-//
+/*
+ 
+ The view displays information about the weather in a given location, using a model object of type "ResponseBody" & an array from the upcoming days [ForecastResponse] which is passed as a parameter to the view.
+ 
+ */
 
 import SwiftUI
 
 struct WeatherView: View {
     var weather: ResponseBody
+    var forecast: [ForecastResponse]
+
     @State private var isDayTime = false
+
+    //By initializing a "WeatherView" object with the necessary data, the view can be updated with the latest weather information and forecast data.
+    init(weather: ResponseBody, forecast: [ForecastResponse]) {
+        self.weather = weather
+        self.forecast = forecast
+    }
 
     var body: some View {
         ZStack(alignment: .leading) {
@@ -41,7 +48,7 @@ struct WeatherView: View {
                     }
 
                     Spacer()
-                    
+
                     ZStack {
                         if isDayTime {
                             Image(systemName: "sun.max.fill")
@@ -64,38 +71,40 @@ struct WeatherView: View {
                         self.isDayTime = hour >= 6 && hour < 18
                     }
 
-                    VStack {
-                        VStack(alignment: .leading, spacing: 20) {
-                            Text("Weather now")
-                                .bold()
-                                .padding(.bottom)
+                    VStack(alignment: .leading, spacing: 20) {
+                        
+                        Text("Weather now")
+                            .bold()
+                            .padding(.bottom)
 
-                            HStack {
-                                WeatherRow(logo: "thermometer", name: "Min temp", value: weather.main.tempMin.roundDouble() + "°")
-                                Spacer()
-                                WeatherRow(logo: "thermometer", name: "Max temp", value: weather.main.tempMax.roundDouble() + "°")
-                            }
+                        HStack {
+                            WeatherRow(logo: "thermometer", name: "Min temp", value: weather.main.tempMin.roundDouble() + "°")
+                            Spacer()
+                            WeatherRow(logo: "thermometer", name: "Max temp", value: weather.main.tempMax.roundDouble() + "°")
+                        }
 
-                            HStack {
-                                WeatherRow(logo: "wind", name: "Wind speed", value: weather.wind.speed.roundDouble() + " m/s")
-                                Spacer()
-                                WeatherRow(logo: "humidity", name: "Humidity", value: "\(weather.main.humidity.roundDouble())%")
-                            }
-                            Text("Upcoming days")
-                                .bold()
+                        HStack {
+                            WeatherRow(logo: "wind", name: "Wind speed", value: weather.wind.speed.roundDouble() + " m/s")
+                            Spacer()
+                            WeatherRow(logo: "humidity", name: "Humidity", value: "\(weather.main.humidity.roundDouble())%")
+                        }
 
-                            HStack(spacing: 2) {
-                                ForEach(0 ..< 7) { day in
-                                    WeekWeatherRow(logo: "sun.min", name: "Day \(day + 1)", value: "\(weather.main.feelsLike.roundDouble())°")
+                        Text("Upcoming days")
+                            .bold()
+
+                        ScrollView(.horizontal) {
+                            HStack(spacing: 20) {
+                                ForEach(forecast) { forecast in
+                                    WeekWeatherRow(name: "\(forecast.list[0].date)", value: "\(forecast.list[0].main.temperature.rounded())°",
+                                                   condition: forecast.list[0].weather[0].main)
                                 }
                             }
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
-                        .foregroundColor(Color(hue: 0.656, saturation: 0.787, brightness: 0.354))
-                        .background(.white)
-                        .cornerRadius(20, corners: [.topLeft, .topRight])
                     }
+                    .padding()
+                    .foregroundColor(Color(hue: 0.656, saturation: 0.787, brightness: 0.354))
+                    .background(.white)
+                    .cornerRadius(20, corners: [.topLeft, .topRight])
                 }
             }
         }
@@ -108,6 +117,7 @@ struct WeatherView: View {
 
 struct WeatherView_Previews: PreviewProvider {
     static var previews: some View {
-        WeatherView(weather: previewWeather)
+        let forecast = [ForecastResponse]()
+        WeatherView(weather: previewWeather, forecast: forecast)
     }
 }

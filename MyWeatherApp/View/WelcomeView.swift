@@ -1,13 +1,9 @@
-//
-//  WelcomeView.swift
-//  MyWeatherApp
-//
-//  Created by Martin Nordebäck on 2023-04-14.
-//
+
 import CoreLocationUI
 import SwiftUI
 
 struct WelcomeView: View {
+    //It uses an @EnvironmentObject property wrapper to access an instance of a LocationManager class.
     @EnvironmentObject var locationManager: LocationManager
 
     var body: some View {
@@ -22,6 +18,7 @@ struct WelcomeView: View {
             .multilineTextAlignment(.center)
             .padding()
 
+            //call the requestLocation function the get the location, rest of the logic is handle in their
             LocationButton(.shareCurrentLocation) {
                 locationManager.requestLocation()
             }
