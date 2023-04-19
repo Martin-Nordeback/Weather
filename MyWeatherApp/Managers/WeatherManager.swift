@@ -1,47 +1,71 @@
 /*
- 
- 
- 
+
+ Summary, this code demonstrates how to use asynchronous networking and JSON decoding in Swift to retrieve and parse weather data from an API.
+
  */
 
 import CoreLocation
 import Foundation
 
+// MARK: - Constants
+
+private let currentWeatherEndpoint = "https://api.openweathermap.org/data/2.5/weather"
+private let weatherForecastEndpoint = "https://api.openweathermap.org/data/2.5/forecast"
+private let apiKey = "17fa258a1f4f333c53a6161a066e886c"
+
+// MARK: - Error Types
+
+enum WeatherManagerError: Error {
+    case invalidURL
+    case invalidResponse
+    case decodingError
+}
+
+// MARK: - Weather Manager
+
 class WeatherManager {
     // MARK: API FOR CURRENT WEATHER
-    
-    private let apiKey = "17fa258a1f4f333c53a6161a066e886c"
 
     func getCurrentWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) async throws -> ResponseBody {
-        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)&units=metric") else { fatalError("Missing URL") }
+        let urlString = "\(currentWeatherEndpoint)?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)&units=metric"
+        guard let url = URL(string: urlString) else { throw WeatherManagerError.invalidURL }
 
-        let urlRequest = URLRequest(url: url)
-        let (data, response) = try await URLSession.shared.data(for: urlRequest)
-        guard (response as? HTTPURLResponse)?.statusCode == 200 else { fatalError("Error fetching weather data") }
-
-        let decodedData = try JSONDecoder().decode(ResponseBody.self, from: data)
+        let data = try await fetchData(from: url)
+        let decodedData = try decodeJSONData(data, toType: ResponseBody.self)
         return decodedData
     }
 
     // MARK: API FOR FORECAST 5-DAYS
 
     func getWeatherForecast(latitude: CLLocationDegrees, longitude: CLLocationDegrees) async throws -> [ForecastItem] {
-        guard let url = URL(string:
-            "https://api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)&units=metric") else { fatalError("Missing Forecast URL") }
+        let urlString = "\(weatherForecastEndpoint)?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)&units=metric"
+        guard let url = URL(string: urlString) else { throw WeatherManagerError.invalidURL }
 
-        let urlRequest = URLRequest(url: url)
-        let (data, response) = try await URLSession.shared.data(for: urlRequest)
-        guard (response as? HTTPURLResponse)?.statusCode == 200 else { fatalError("Error fetching forecast weather data") }
-
+        let data = try await fetchData(from: url)
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(.forecastDateFormatter)
-        let decodedData = try decoder.decode(ForecastResponse.self, from: data)
+        let decodedData = try decodeJSONData(data, toType: ForecastResponse.self)
         return decodedData.list
+    }
+
+    // MARK: - Private Functions
+
+    private func fetchData(from url: URL) async throws -> Data {
+        let (data, response) = try await URLSession.shared.data(from: url)
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else { throw WeatherManagerError.invalidResponse }
+        return data
+    }
+
+    private func decodeJSONData<T: Decodable>(_ data: Data, toType type: T.Type) throws -> T {
+        do {
+            let decodedData = try JSONDecoder().decode(type, from: data)
+            return decodedData
+        } catch {
+            throw WeatherManagerError.decodingError
+        }
     }
 }
 
-
-// DRY!! + take it away from this scope
 struct ResponseBody: Decodable {
     var coord: CoordinatesResponse
     var weather: [WeatherResponse]
@@ -68,6 +92,14 @@ struct ResponseBody: Decodable {
         var temp_max: Double
         var pressure: Double
         var humidity: Double
+
+        enum CodingKeys: String, CodingKey {
+            case temp, feels_like, temp_min, temp_max, pressure, humidity
+        }
+
+        var feelsLike: Double { return feels_like }
+        var tempMin: Double { return temp_min }
+        var tempMax: Double { return temp_max }
     }
 
     struct WindResponse: Decodable {
@@ -75,14 +107,6 @@ struct ResponseBody: Decodable {
         var deg: Double
     }
 }
-
-extension ResponseBody.MainResponse {
-    var feelsLike: Double { return feels_like }
-    var tempMin: Double { return temp_min }
-    var tempMax: Double { return temp_max }
-}
-
-/* --------------------------------------- */
 
 struct ForecastResponse: Decodable, Identifiable, Hashable {
     var id = UUID()
@@ -117,6 +141,9 @@ struct ForecastItem: Decodable, Hashable, Identifiable {
             case pressure
             case humidity
         }
+
+        var tempMin: Double { return temperature }
+        var tempMax: Double { return temperature }
     }
 
     struct WeatherResponse: Decodable, Hashable {
@@ -148,7 +175,7 @@ struct ForecastItem: Decodable, Hashable, Identifiable {
         hasher.combine(id)
     }
 
-    static func ==(lhs: ForecastItem, rhs: ForecastItem) -> Bool {
+    static func == (lhs: ForecastItem, rhs: ForecastItem) -> Bool {
         return lhs.id == rhs.id
     }
 }
