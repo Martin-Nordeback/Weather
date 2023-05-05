@@ -11,7 +11,7 @@ import Foundation
 
 private let currentWeatherEndpoint = "https://api.openweathermap.org/data/2.5/weather"
 private let weatherForecastEndpoint = "https://api.openweathermap.org/data/2.5/forecast"
-private let apiKey = "17fa258a1f4f333c53a6161a066e886c"
+private let apiKey = ""
 
 // MARK: - Error Types
 
